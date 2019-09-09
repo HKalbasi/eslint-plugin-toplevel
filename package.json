@@ -1,14 +1,18 @@
 {
   "name": "eslint-plugin-toplevel",
   "version": "1.0.0",
-  "description": "",
+  "description": "An eslint plugin for disallow side effect at module toplevel",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HKalbasi/eslint-plugin-toplevel"
+  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "hkalbasi",
+  "license": "GPL-3.0",
   "peerDependencies": {
     "eslint": ">= 6"
   }
