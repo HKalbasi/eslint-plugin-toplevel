@@ -5,7 +5,8 @@ An eslint plugin for disallow side effect at module toplevel
 Side effect in toplevel of a module are hard to reason, and [behave diffrently](https://developpaper.com/explain-the-difference-between-commonjs-and-es6-modules-in-cyclic-loading-processing/) in CommonJS and ES6 modules. And there is no way to import a module without it's side effects. Solution is simple: **Don't make side effect at top level**.
 
 ## Example
-bad:
+
+### Bad
 ```JS
 console.log('hello world');
 let s=0;
@@ -16,7 +17,7 @@ console.log(s);
 fetch('/api').then(res=>res.text()).then(console.log);
 ```
 
-good:
+### Good
 ```JS
 export async function main() {
   console.log('hello world');
@@ -28,6 +29,21 @@ export async function main() {
   const res = await fetch('/api');
   console.log(await res.text());
 }
+```
+
+And then in html:
+
+```HTML
+<script type="module">
+  import { main } from "/js/main.mjs";
+  main();
+</script>
+```
+
+Or in nodejs make a runner.mjs file:
+```JS
+import { main } from "./main.mjs";
+main();
 ```
 
 ## Rules
@@ -45,5 +61,5 @@ I'd love to accept your patches and contributions to this project.
 There are many ways you can contribute. For example:
 * Add tests
 * Fix bugs
-* Add option to ignore module.export assigns in `no-toplevel-side-effect` rule
+* Add option to ignore `module.exports` assigns in `no-toplevel-side-effect` rule
 * Add good documention
