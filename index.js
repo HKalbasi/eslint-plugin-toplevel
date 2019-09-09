@@ -54,15 +54,5 @@ module.exports = {
       WhileStatement:se(context),
       SwitchStatement:se(context),
     }),
-    'no-toplevel-block': (ctx)=>({
-      BlockStatement(node){
-        if (isTopLevel(node)){
-          ctx.report({
-            node,
-            message: `Blocks in toplevel are not allowed.`
-          })
-        }
-      }
-    })
   }
 }
