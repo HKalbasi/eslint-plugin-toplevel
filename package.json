@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/HKalbasi/eslint-plugin-toplevel"
   },
-  "keywords": [],
+  "keywords": ["eslint", "eslint-plugin", "functional", "side-effect"],
   "author": "hkalbasi",
   "license": "GPL-3.0",
   "peerDependencies": {
