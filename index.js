@@ -48,7 +48,17 @@ module.exports = {
       };
     },
     'no-toplevel-side-effect': (context)=>({
-      ExpressionStatement:se(context),
+      ExpressionStatement: (node) => {
+        const options = context.options[0] || {};
+
+        const allowedStatements = options.allow || [];
+
+        if (allowedStatements.includes(node.expression.value)) {
+          return;
+        }
+
+        return se(context)(node);
+      },
       IfStatement:se(context),
       ForStatement:se(context),
       WhileStatement:se(context),
