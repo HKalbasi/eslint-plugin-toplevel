@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-toplevel",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "An eslint plugin for disallow side effect at module toplevel",
   "main": "index.js",
   "scripts": {
