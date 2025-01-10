@@ -3,7 +3,7 @@ function isTopLevel(node){
   while (scope.type === 'BlockStatement'){
     scope = scope.parent;
   }
-  return (scope.type === 'Program');     
+  return (scope.type === 'Program');
 }
 
 function se(context){
@@ -18,51 +18,61 @@ function se(context){
 }
 
 module.exports = {
+  meta:  {
+    name: 'eslint-plugin-toplevel'
+  },
   rules: {
-    'no-toplevel-var': function(context){
-      return {
-        "VariableDeclaration": function(node) {
-          if (node.kind === "var") {
-            if(isTopLevel(node)){
-              context.report({
-                node, 
-                message: `Unexpected var in toplevel, use const.`,
-              });
+    'no-toplevel-var': {
+      create(context) {
+        return {
+          VariableDeclaration(node) {
+            if (node.kind === 'var') {
+              if (isTopLevel(node)) {
+                context.report({
+                  node,
+                  message: `Unexpected var in toplevel, use const.`,
+                });
+              }
             }
-          }
-        }
-      };
+          },
+        };
+      },
     },
-    'no-toplevel-let': function(context){
-      return {
-        "VariableDeclaration": function(node) {
-          if (node.kind === "let") {
-            if(isTopLevel(node)){
-              context.report({
-                node, 
-                message: `Unexpected let in toplevel, use const.`,
-              });
+    'no-toplevel-let': {
+      create(context) {
+        return {
+          VariableDeclaration(node) {
+            if (node.kind === 'let') {
+              if (isTopLevel(node)) {
+                context.report({
+                  node,
+                  message: `Unexpected let in toplevel, use const.`,
+                });
+              }
             }
-          }
-        }
-      };
+          },
+        };
+      },
     },
-    'no-toplevel-side-effect': (context)=>({
-      ExpressionStatement: (node) => {
+    'no-toplevel-side-effect': {
+      create(context) {
         const options = context.options[0] || {};
 
         const allowedStatements = options.allow || [];
 
-        if (allowedStatements.includes(node.expression.value)) {
-          return;
-        }
-
-        return se(context)(node);
+        return {
+          ExpressionStatement(node) {
+            if (allowedStatements.includes(node.expression.value)) {
+              return;
+            }
+            se(context)(node);
+          },
+          IfStatement: se(context),
+          ForStatement: se(context),
+          WhileStatement: se(context),
+          SwitchStatement: se(context),
+        };
       },
-      IfStatement:se(context),
-      ForStatement:se(context),
-      WhileStatement:se(context),
-      SwitchStatement:se(context),
-    }),
+    },
   }
 }
